@@ -13,7 +13,8 @@ class SnakesAndLadderPlayerData
 {
 private:
 	string playerName;
-	bool scoreCard[100] = {false};
+	
+	int currPositon = 0;
 	bool canStart = false;
 public:
 	 //SnakesAndLadder();
@@ -25,12 +26,18 @@ public:
 	string getPlayerName(){
 		return playerName;
 	}
-	bool  isThere(int position){
-		return scoreCard[position];
+	int  getPosition(){
+		return currPositon;
 	}
 
-	void setScoreCard(int position, bool value){
-		scoreCard[position] = value;
+	void setPosition(int position){
+		currPositon= position;
+	}
+	bool getCanStart(){
+		return canStart;
+	}
+	void setCanStart(bool value){
+		canStart = value;
 	}
 
 	/* data */
@@ -39,7 +46,7 @@ public:
 
 void printBoard();
 int randomk();
-bool Check();
+bool Check(SnakesAndLadderPlayerData *players, int noPlayers);
 
 int main(){
 	cout<<"----------------------------SNAKES AND LADDERS----------------------------\n"<<endl;
@@ -59,42 +66,92 @@ int main(){
     
 	printBoard();
 
-	while(Check){
+	while(Check(players, noPlayers)){
 		for (int i = 0; i<noPlayers; i++){
 			char input;
 			cout<<"Player "<< players[i].getPlayerName()<< " press ENTER to roll dice: ";
 			cin>>input;
 			int diceValue = randomk();
 
-			if (diceValue == 6){
+			if (diceValue == 6 && !players[i].getCanStart()){
+				players[i].setCanStart(true);
 				cout<<"Player "<< players[i].getPlayerName()<< " got "<<diceValue<< " .You can START!"<<endl;
 				cout<<"Player "<< players[i].getPlayerName()<< " press ENTER to roll dice AGAIN! ";
 				cin>>input;
-			    diceValue = randomk();
+			    int diceValue2 = randomk();
 
-				if (diceValue == 6){
-					cout<<"Player "<< players[i].getPlayerName()<< " got two "<<diceValue<< "\'s in a row  .You can START!"<<endl;
+				if (diceValue2 == 6){
+					cout<<"Player "<< players[i].getPlayerName()<< " got two "<<diceValue2<< "\'s in a row."<<endl;
 					cout<<"Player "<< players[i].getPlayerName()<< " press ENTER to roll dice AGAIN! ";
 					cin>>input;
-					diceValue = randomk();
+					int diceValue3 = randomk();
 
-					if (diceValue == 6){
-						cout<<"Player "<< players[i].getPlayerName()<< " got three "<<diceValue<< "\'s in a row .You can START!"<<endl;
-						cout<<"Player "<< players[i].getPlayerName()<< " This is a fault. Start Over again";
-						
-						
-
-				
+					if (diceValue3 == 6){
+						cout<<"Player "<< players[i].getPlayerName()<< " got three "<<diceValue3<< "\'s in a row."<<endl;
+						cout<<"Player "<< players[i].getPlayerName()<< " This is a fault. Start Over again. Need 6 again";
+						players[i].setCanStart(false);
+						players[i].setPosition(0);
+					
+					}
+					else {
+					    cout<<"Player "<< players[i].getPlayerName()<< " got "<<diceValue3<<endl;
+					    players[i].setPosition(players[i].getPosition()+diceValue+diceValue2+diceValue3);
 					}
 
 				
 				}
+				else{
+					cout<<"Player "<< players[i].getPlayerName()<< " got "<<diceValue2<<endl;
+					    players[i].setPosition(players[i].getPosition()+diceValue+diceValue2);
+				}
+
 
 			}
+
+			else if (diceValue == 6 && players[i].getCanStart()){
+				cout<<"Player "<< players[i].getPlayerName()<< " got "<<diceValue<<endl;
+				cout<<"Player "<< players[i].getPlayerName()<< " press ENTER to roll dice AGAIN! ";
+				cin>>input;
+			    int diceValue2 = randomk();
+
+				if (diceValue2 == 6){
+					cout<<"Player "<< players[i].getPlayerName()<< " got two "<<diceValue2<< "\'s in a row."<<endl;
+					cout<<"Player "<< players[i].getPlayerName()<< " press ENTER to roll dice AGAIN! ";
+					cin>>input;
+					int diceValue3 = randomk();
+
+					if (diceValue3 == 6){
+						cout<<"Player "<< players[i].getPlayerName()<< " got three "<<diceValue3<< "\'s in a row."<<endl;
+						cout<<"Player "<< players[i].getPlayerName()<< " This is a fault. Start Over again";
+						players[i].setPosition(0);
+					}
+
+					else {
+					    cout<<"Player "<< players[i].getPlayerName()<< " got "<<diceValue3<<endl;
+					    players[i].setPosition(players[i].getPosition()+diceValue+diceValue2+diceValue3);
+					}
+				}
+
+				else{
+					cout<<"Player "<< players[i].getPlayerName()<< " got "<<diceValue2<<endl;
+					    players[i].setPosition(players[i].getPosition()+diceValue+diceValue2);
+				}
+
+			}
+
+			else if (diceValue!=6 && players[i].getCanStart()) {
+				cout<<"Player "<< players[i].getPlayerName()<< " got "<<diceValue<<endl;
+				players[i].setPosition(players[i].getPosition()+diceValue);
+			}
+			cout<<"Player "<< players[i].getPlayerName()<< " at Position "<<players[i].getPosition()<<endl;
+		cout<<"\n"<<endl;
 		}
 
-	}
-	printBoard();
+	
+
+	//printBoard();
+}
+	return 0;
 }
 
 void printBoard(){
@@ -119,7 +176,14 @@ int randomk (){
     return (rand() % 6 + 1);
 }
 
-bool Check(){
+bool Check(SnakesAndLadderPlayerData *players, int noPlayers){
 	//if someone at 100 return false
+for (int i = 0; i<noPlayers; i++){
+		if(players[i].getPosition()>=100){
+			cout<<"\n\n\n----------------Player "<<players[i].getPlayerName()<<" won----------------"<<endl;
+         return false;
+		}
+	}
+return true;
 	
 }
