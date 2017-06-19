@@ -46,6 +46,7 @@ public:
 
 void printBoard();
 int randomk();
+void resetOverlappedPlayers(SnakesAndLadderPlayerData *players, int currPlayer, int currPlayerPosition int noPlayers);
 bool Check(SnakesAndLadderPlayerData *players, int noPlayers);
 
 int main(){
@@ -186,4 +187,14 @@ for (int i = 0; i<noPlayers; i++){
 	}
 return true;
 	
+}
+
+void resetOverlappedPlayers(SnakesAndLadderPlayerData *players, int currPlayer, int currPlayerPosition int noPlayers){
+	for (int i = 0 ; i < noPlayers; i++){
+		if(players[i].getPosition()==currPlayerPosition && i!=currPlayer){
+			cout<<"Player "<<players[currPlayer].getPlayerName()<<" overlapped "<<players[i].getPlayerName()<<" therefore "
+				<<players[i].getPlayerName()<<" will restart"<<endl;
+			players[i].players[i].setPosition(0);
+		}
+	}
 }
