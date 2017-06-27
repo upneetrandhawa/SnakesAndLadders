@@ -46,7 +46,7 @@ public:
 
 void printBoard();
 int randomk();
-void resetOverlappedPlayers(SnakesAndLadderPlayerData *players, int currPlayer, int currPlayerPosition int noPlayers);
+void resetOverlappedPlayers(SnakesAndLadderPlayerData *players, int currPlayer, int currPlayerPosition, int noPlayers);
 bool Check(SnakesAndLadderPlayerData *players, int noPlayers);
 
 int main(){
