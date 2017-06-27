@@ -145,7 +145,8 @@ int main(){
 				players[i].setPosition(players[i].getPosition()+diceValue);
 			}
 			cout<<"Player "<< players[i].getPlayerName()<< " at Position "<<players[i].getPosition()<<endl;
-		cout<<"\n"<<endl;
+			cout<<"\n"<<endl;
+			resetOverlappedPlayers(players,i,players[i].getPosition(),noPlayers);
 		}
 
 	
